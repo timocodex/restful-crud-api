@@ -5,9 +5,126 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <title>Document</title>
 </head>
 <body>
 
+  <div class="container">
+    <button class="button" type="submit" onclick="newMemo()">new Memo</button>
+  <div id="memo" class="row">
+
+  </div>
+
+  <div id="formMemo" class="row">
+
+  </div>
+
+  </div>
 </body>
+<script type="text/javascript">
+
+$(document).ready(function(){
+  showMemo()
+})
+
+function newMemo(){
+  $('#formMemo').empty()
+  $('#formMemo').append(`
+    <form class="col s12">
+        <div class="input-field col s6">
+          <input id="newMemo" type="text" class="validate">
+          <label class="active" for="Memo">New Memo</label>
+          <button class="button" type="submit" onclick="createMemo()">Add Memo</button>
+        </div>
+      </form>`)
+}
+
+function upMemo(todo,id){
+  $('#formMemo').empty()
+  $('#formMemo').append(`
+    <form class="col s12">
+        <div class="input-field col s6">
+          <input id="upMemo" type="text" class="validate" placeholder="${todo}">
+          <label class="active" for="Memo">New Memo</label>
+          <button class="button" type="submit" onclick="updateMemo('${id}')">update Memo</button>
+        </div>
+      </form>`)
+}
+function showMemo(){
+  $.ajax({
+    type: 'GET',
+    url: 'http://localhost:3000/memos',
+    success: function(resp) {
+        $('#memo').empty()
+
+      resp.forEach(function(data){
+        $('#memo').append(`
+          <div class="col s12 m12 l12">
+              <div class="card horizontal">
+                <div class="card-image">
+                  <img src="http://lorempixel.com/100/190/nature/6">
+                </div>
+                <div class="card-stacked">
+                  <div class="card-content">
+                    <p>${data.todo}</p>
+                  </div>
+                  <div class="card-action">
+                    <button type="button" name="update" onclick="upMemo('${data.todo}','${data._id}')")">update</button><button type="button" name="delete" onclick="deleteMemo('${data._id}')")">delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>`)
+
+      })
+    },
+    error: function(error) {
+      console.log(error);
+    }
+  });
+}
+
+function createMemo(){
+  $.ajax({
+    type: 'POST',
+    url: 'http://localhost:3000/createMemo',
+    data: {todo:$("#newMemo").val()},
+    success: function(resp) {
+      showMemo()
+    },
+    error: function(error) {
+      console.log(error);
+    }
+  });
+}
+
+function deleteMemo(ide){
+  $.ajax({
+    type: 'DELETE',
+    url: 'http://localhost:3000/deleteMemo',
+    data: {id:ide},
+    success: function(resp) {
+      showMemo()
+    },
+    error: function(error) {
+      console.log(error);
+    }
+  });
+}
+
+function updateMemo(ide){
+  $.ajax({
+    type: 'PUT',
+    url: 'http://localhost:3000/updateMemo',
+    data: {id:ide,todo:$("#upMemo").val()},
+    success: function(resp) {
+      showMemo()
+    },
+    error: function(error) {
+      console.log(error);
+    }
+  });
+}
+
+</script>
 </html>
