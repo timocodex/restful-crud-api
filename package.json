@@ -1,0 +1,25 @@
+{
+  "name": "restful-crud-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timocodex/restful-crud-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timocodex/restful-crud-api/issues"
+  },
+  "homepage": "https://github.com/timocodex/restful-crud-api#readme",
+  "dependencies": {
+    "express": "^4.14.1",
+    "mongod": "^2.0.0",
+    "mongoose": "^4.8.2"
+  }
+}
